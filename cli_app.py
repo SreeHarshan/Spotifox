@@ -1,0 +1,144 @@
+#!/usr/bin/python
+import os
+import sys
+import subprocess
+import time
+
+PID_FILE_PATH = "/tmp/spotifox.pid"
+
+def read_pid():
+    if(not os.path.isfile(PID_FILE_PATH)):
+        f = open(PID_FILE_PATH,"w+")
+    else:
+        f = open(PID_FILE_PATH,"r")
+    pid = f.read().strip()
+    f.close()
+
+    return pid
+
+
+def is_open():
+    pid = read_pid()
+    if(pid == ""):
+        return False
+
+    # Get name of windows open with their pid 
+    windows = subprocess.check_output(["wmctrl", "-lp"], text=True).split("\n")
+    for w in windows:
+        if(pid in w):
+            return True
+    return False
+
+
+# Function to check and start spotifox 
+def start():
+    # If Spotifox is open then display spotifox is already open
+    if(is_open()):
+        print("Spotifox is already open")
+
+
+    # If Spotifox is not open write new pid and start spotifox
+    else:
+        os.system("bash -c 'echo $$ > /tmp/spotifox.pid && firefox --p spotify open.spotify.com' &")
+        pid = read_pid()
+        time.sleep(2)
+        os.system('wmctrl -r $(wmctrl -lp | grep {} | cut -d " " -f 7-) -t 2'.format(pid))
+
+# Function to get spotify status
+def get_spotistatus():
+    if(is_open()):
+        if("Spotify" in get_spotiname()):
+            return "Paused"
+        return "Playing"
+    return "Offline"
+
+def get_mpdstatus():
+    status = subprocess.check_output(["mpc", "status"], text=True)
+    if("paused" in status):
+        return "Paused"
+    if("playing" in status):
+        return "Playing"
+    return "Offline"
+
+def get_status():
+    s = get_spotistatus()
+    m = get_mpdstatus()
+    if(s=="Playing" or m == "Playing"):
+        return "Playing"
+    elif(s=="Paused" or m == "Paused"):
+        return "Paused"
+    return "Offline"
+
+
+# Function to get name of song playing
+def get_spotiname():
+    # Read the pid file
+    pid = read_pid()
+    if(pid == "" or not is_open()):
+        return "Offline"
+
+    # Get title of window for the current pid
+    windows = subprocess.check_output(["wmctrl", "-lp"], text=True).split("\n")
+    title = ""
+    for w in windows:
+        if(pid in w):
+            title = w[w.index("harshanlap")+11:]
+
+
+    return title.split("—")[0]
+
+def get_mpdname():
+    status = subprocess.check_output(["mpc", "status"], text=True).split("\n")
+    if(len(status)<3):
+        return "Offline"
+
+    name = subprocess.check_output(["mpc","status"],text=True).split("\n")[0]
+    return name
+
+
+def get_name():
+    s = get_spotiname()
+    m = get_mpdname()
+    if(s == m):
+        return "Offline"
+    elif(s!="Offline" and "Spotify" not in s):
+        return s
+    return m
+        
+
+
+def print_help():
+    print('''
+==============================
+=======Spotify Scraper========
+==============================
+by Sree Harshan
+
+--help:
+	View this page
+
+--start:
+	Start firefox in the profile
+
+--get:
+	Get the current playing song name and artist
+
+--status:
+    Prints playing and paused status
+''')
+
+
+# temp
+if(len(sys.argv)==1):
+    print_help()
+elif(sys.argv[1] == "--help"):
+    print_help()
+elif(sys.argv[1] == "--start"):
+    start()
+elif(sys.argv[1] == "--get"):
+    os.system("echo '{}'".format(get_name()))
+elif(sys.argv[1] == "--status"):
+    os.system("echo '{}'".format(get_status()))
+else:
+    print("Bad usage")
+    print_help()
