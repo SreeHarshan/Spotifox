@@ -39,9 +39,10 @@ def start():
 
     # If Spotifox is not open write new pid and start spotifox
     else:
-        os.system("bash -c 'echo $$ > /tmp/spotifox.pid && firefox --p spotify open.spotify.com' &")
+        os.system("bash -c 'echo $$ > /tmp/spotifox.pid && firefox --p spotify -kiosk -url open.spotify.com' &")
         pid = read_pid()
         time.sleep(2)
+        os.system("xdotool key super+t")
         os.system('wmctrl -r $(wmctrl -lp | grep {} | cut -d " " -f 7-) -t 2'.format(pid))
 
 # Function to get spotify status
@@ -85,6 +86,7 @@ def get_spotiname():
             title = w[w.index("harshanlap")+11:]
 
 
+
     return title.split("—")[0]
 
 def get_mpdname():
@@ -92,7 +94,7 @@ def get_mpdname():
     if(len(status)<3):
         return "Offline"
 
-    name = subprocess.check_output(["mpc","status"],text=True).split("\n")[0]
+    name = status[0]
     return name
 
 
@@ -102,8 +104,8 @@ def get_name():
     if(s == m):
         return "Offline"
     elif(s!="Offline" and "Spotify" not in s):
-        return s
-    return m
+        return s.replace("'","").replace('"','')  # Remove quotes from song name 
+    return m.replace("'","").replace('"','')  # Remove quotes from song name 
         
 
 
@@ -128,9 +130,8 @@ by Sree Harshan
 ''')
 
 
-# temp
 if(len(sys.argv)==1):
-    print_help()
+    start()
 elif(sys.argv[1] == "--help"):
     print_help()
 elif(sys.argv[1] == "--start"):

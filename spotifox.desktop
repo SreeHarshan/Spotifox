@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=spotifox
+Icon=spotify
+Name=Spotifox
+
+[Desktop Action New]
+Name=Spotifox
+Exec=spotifox
