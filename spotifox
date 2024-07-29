@@ -42,7 +42,6 @@ def start():
         os.system("bash -c 'echo $$ > /tmp/spotifox.pid && firefox --p spotify -kiosk -url open.spotify.com' &")
         pid = read_pid()
         time.sleep(2)
-        os.system("xdotool key super+t")
         os.system('wmctrl -r $(wmctrl -lp | grep {} | cut -d " " -f 7-) -t 2'.format(pid))
 
 # Function to get spotify status
