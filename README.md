@@ -1,10 +1,18 @@
 Spotifox
 
 * Spotify player that uses spotify web to play songs
+  
 * Display song title from cli
+  
 * Can alternate title between mpd and spotify depending on what's playing
 
-INSTALLATION
+Requirements
+* Arch
+  ```
+  sudo pacman -S wmctrl mpc
+  ``` 
+
+Installation
 * Clone this repo <br/>
   ```
   git clone https://github.com/SreeHarshan/Spotifox/ && cd Spotifox
@@ -29,6 +37,7 @@ INSTALLATION
 NOTE
 * This uses firefox profile to play spotify on separate web browser
 * Make sure to create a profile called "spotify" on firefox
+* You would need to login only for the first time
 
 Future works
 * Make an install script
