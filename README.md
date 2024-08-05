@@ -29,17 +29,9 @@ Installation
   ```
   chmod +x spotifox
   ```
-* Copy the file into user executables dir <br/>
+* Copy the desktop related file <br/>
   ```
-  sudo cp spotifox /usr/bin/spotifox
-  ```
-* Copy the icon file <br/>
-  ```
-  cp spotifox.png ~/.local/share/icons/
-  ```
-* Copy the desktop entry <br/>
-  ```
-  sudo cp spotifox.desktop /usr/share/applications/spotifox.desktop
+  sudo cp spotifox /usr/bin/spotifox && cp spotifox.png /usr/share/icons/ && cp spotifox.desktop /usr/share/applications/spotifox.desktop
   ```
 
 NOTE
