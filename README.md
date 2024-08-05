@@ -9,8 +9,12 @@ Spotifox
 Requirements
 * Arch
   ```
-  sudo pacman -S wmctrl mpc
-  ``` 
+  sudo pacman -S wmctrl mpc git
+  ```
+* Ubuntu/Debian
+  ```
+  sudo apt install wmctrl mpc git
+  ```
 
 Installation
 * Clone this repo <br/>
