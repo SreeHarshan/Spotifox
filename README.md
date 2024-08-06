@@ -31,7 +31,7 @@ Installation
   ```
 * Copy the desktop related file <br/>
   ```
-  sudo cp spotifox /usr/bin/spotifox && cp spotifox.png /usr/share/icons/ && cp spotifox.desktop /usr/share/applications/spotifox.desktop
+  sudo cp spotifox /usr/bin/spotifox && sudo cp spotifox.png /usr/share/icons/ && sudo cp spotifox.desktop /usr/share/applications/spotifox.desktop
   ```
 
 NOTE
